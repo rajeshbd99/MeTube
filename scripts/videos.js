@@ -18,6 +18,16 @@ const loadVideos = () => {
     .catch((error) => console.log(error));
 };
 
+//Day, hour, minute, second format
+
+function getTimeString(time) {
+    const hour = parseInt(time / 3600);
+    let remainingSeconds = time % 3600;
+    const minute = parseInt(remainingSeconds / 60);
+    remainingSeconds = remainingSeconds % 60;  
+    return `${hour}h ${minute}m ${remainingSeconds}s ago`;
+}
+
 //create displayVideos function
 
 const displayVideos = (videos) => {
@@ -30,7 +40,7 @@ const displayVideos = (videos) => {
         <figure class= "h-[200px] relative">
             <img src=${video.thumbnail} 
             class = " h-full w-full object-cover " alt="Shoes" />
-            <span class="absolute right-2 bottom-2 bg-black text-white rounded p-1">${video.others.posted_date} </span>
+            ${video.others.posted_date?.length ==0 ? "" : `<span class="absolute right-2 bottom-2 bg-black text-white rounded p-1">${getTimeString(video.others.posted_date)} </span>`}
         </figure>
         <div class="px-0 py-2 flex gap-2">
             <div>
