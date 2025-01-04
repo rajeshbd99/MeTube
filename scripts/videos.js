@@ -18,6 +18,36 @@ const loadVideos = () => {
     .catch((error) => console.log(error));
 };
 
+const loadDetails = async(videoId) => {
+    const uri = `https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`;
+    const res = await fetch(uri);
+    const data = await res.json();
+    displayDetails(data.video);
+
+};
+
+const displayDetails = (video) => {
+    const detailsContainer = document.getElementById("modal-content");
+    detailsContainer.innerHTML = `
+    <div class="flex gap-5">
+        <div class="w-full object-cover">
+            <img src="${video.thumbnail}" class="w-full h-[300px] object-cover" alt="Shoes"/>
+        </div>
+        <div class="w-1/2">
+            <h2 class="text-2xl font-bold">${video.title}</h2>
+            <p class="text-gray-400">${video.authors[0].profile_name}</p>
+            <div class="flex items
+            -center gap-2">
+                <img class="w-10 h-10 rounded-full object-cover" src="${video.authors[0].profile_picture}"/>
+                ${video.authors[0].verified ? `<img class="w-5" src="https://img.icons8.com/?size=48&id=D9RtvkuOe31p&format=png"/>` : ""}
+            </div>
+            <p>${video.description}</p>
+        </div>
+    </div>
+    `;
+    document.getElementById("customModal").showModal();
+
+};
 //Day, hour, minute, second format
 
 function getTimeString(time) {
@@ -87,7 +117,7 @@ const displayVideos = (videos) => {
                 ${video.authors[0].verified ? `<img class="w-5 " src="https://img.icons8.com/?size=48&id=D9RtvkuOe31p&format=png"/>` : ""}
                 </div>
                 
-                <p> </p>
+                <p> <button onclick="loadDetails('${video.video_id}')" class="btn btn-sm btn-error">Details </button> </p>
             </div>
 
         </div>
